@@ -1,10 +1,12 @@
 import React from 'react';
-import { Accordion, Card, AccordionButton, ListGroup, ListGroupItem, Form } from 'react-bootstrap';
+import { Accordion, Button, ListGroup, ListGroupItem, Form } from 'react-bootstrap';
 import { Site } from '../contexts/sites';
+import { getCurrentNews } from '../services/server';
 
 
 interface LinkPickerState {
     articles: Array<SiteArticles>;
+    checkedUrls: Set<string>;
 }
 
 interface SiteArticles {
@@ -18,19 +20,27 @@ interface Article {
 
 interface LinkPickerProps {
     sites: Array<Site>;
+    summarizeCbk: () => void;
 }
 
-export default class LinkPicker extends React.Component {
+export default class LinkPicker extends React.Component<LinkPickerProps> {
     state: LinkPickerState;
 
     constructor(props: LinkPickerProps) {
         super(props);
+        const siteArticles = getCurrentNews(props.sites.map(site => site.url));
         this.state = {
-            articles: [
-                { site: { name: 'Seznam', url: 'https://www.seznam.cz' }, articles: [{ url: 'https://www.seznam.cz/1' }, { url: 'https://www.seznam.cz/2' }] },
-                { site: { name: 'BBC', url: 'https://www.bbc.co.uk' }, articles: [{ url: 'https://www.bbc.co.uk/1' }, { url: 'https://www.bbc.co.uk/2' }] },
-            ]
+            articles: [],
+            checkedUrls: new Set<string>(),
         } as LinkPickerState;
+        for (const site of siteArticles) {
+            this.state.articles.push(
+                {
+                    site: props.sites.find(site => site.url == site.url)!,
+                    articles: site.articles.map(article => { return { url: article.url } }),
+                }
+            )
+        }
     }
 
 
@@ -41,7 +51,7 @@ export default class LinkPicker extends React.Component {
                 <Accordion defaultActiveKey={[]} alwaysOpen>
                     {this.state.articles.map((siteArticles, i) => {
                         return (
-                            <Accordion.Item eventKey={`${i}`}>
+                            <Accordion.Item eventKey={`${i}`} key={`${i}`}>
                                 <Accordion.Header><h4>{siteArticles.site.name}</h4></Accordion.Header>
                                 <Accordion.Body>
                                     <ListGroup>
@@ -51,11 +61,14 @@ export default class LinkPicker extends React.Component {
                                                     <Form>
                                                         <Form.Check
                                                             type="checkbox"
-                                                            checked={true}
-                                                            onChange={(e) => { }}
+                                                            checked={this.state.checkedUrls.has(article.url)}
+                                                            id={`article-checkbox-${i}`}
+                                                            onChange={(e) => {
+                                                                this.toggleChecked(article.url);
+                                                            }}
                                                         />
+                                                        <Form.Label htmlFor={`article-checkbox-${i}`}>{article.url}</Form.Label>
                                                     </Form>
-                                                    <h5>{article.url}</h5>
                                                 </ListGroupItem>
                                             );
                                         })}
@@ -65,7 +78,14 @@ export default class LinkPicker extends React.Component {
                         );
                     })}
                 </Accordion>
+                <Button variant="primary" onClick={() => this.props.summarizeCbk()}>
+                    Summarize
+                </Button>
             </>
         );
+    }
+
+    toggleChecked(url: string) {
+        this.state.checkedUrls.has(url) ? this.state.checkedUrls.delete(url) : this.state.checkedUrls.add(url)
     }
 }

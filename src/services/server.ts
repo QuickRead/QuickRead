@@ -1,13 +1,36 @@
-function getCurrentNews(sites: Array<string>) {
+interface SiteArticles {
+    url: string;
+    articles: Array<Article>;
+}
+
+interface Article {
+    site: string;
+    url: string;
+    title: string;
+    icon: string;
+}
+
+function getCurrentNews(sites: Array<string>): Array<SiteArticles> {
     // TODO: call the server
 
     // mock implementation:
-    let result: { [s: string]: Array<string> } = {}
+    let result: Array<SiteArticles> = []
     for (const site of sites) {
-        result[site] = []
+        let articles: Array<Article> = []
         for (let i = 0; i < 3; i++) {
-            result[site].push(site + "/clanek/" + i)
+            articles.push({
+                site,
+                title: "Clanek " + i,
+                url: site + "/clanek/" + i 
+            } as Article)
         }
+        result.push({
+            url: site,
+            articles
+        })
     }
-
+    return result;
 }
+
+
+export { getCurrentNews, Article }
