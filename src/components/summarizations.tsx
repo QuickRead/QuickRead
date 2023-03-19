@@ -1,13 +1,8 @@
 import * as React from 'react';
-import { Collapse} from 'react-bootstrap';
+import { Collapse } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
 import { BsChevronDown, BsChevronUp } from 'react-icons/bs';
-import { Site } from '../contexts/sites';
-
-interface ArticleSummary {
-  url: string,
-  text: string
-}
+import { Site, ArticleSummary, SiteSummary, Summary } from '../contexts/sites';
 
 export function ArticleSummarization(props: ArticleSummary) {
   return (
@@ -25,11 +20,6 @@ export function ArticleSummarization(props: ArticleSummary) {
 }
 
 
-interface SiteSummarizationProps {
-  site: Site,
-  articles: Array<ArticleSummary>,
-}
-
 const siteSummaryHeader = {
   display: 'grid',
   gridTemplateColumns: '9fr 1fr',
@@ -37,7 +27,7 @@ const siteSummaryHeader = {
   cursor: 'pointer',
 }
 
-export function SiteSummarization(props: SiteSummarizationProps) {
+export function SiteSummarization(props: SiteSummary) {
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -48,7 +38,7 @@ export function SiteSummarization(props: SiteSummarizationProps) {
         onClick={() => setOpen(open => !open)}
       >
         {props.site.name}
-        <span style={{fontSize: '2rem'}}>
+        <span style={{ fontSize: '2rem' }}>
           {open ? <BsChevronUp /> : <BsChevronDown />}
         </span>
       </h1>
@@ -69,14 +59,29 @@ interface MetaSummarizationProps {
 export function MetaSummarization(props: MetaSummarizationProps) {
   return (
     <div className="mb-5">
-        <h1 className='display-1'>
-          Summarization
-        </h1>
-      <p style={{width: '90%'}}>
+      <h1 className='display-1'>
+        Summarization
+      </h1>
+      <p style={{ width: '90%' }}>
         {props.text}
       </p>
     </div>
   );
+}
 
+interface SummarizationProps {
+  summary: Summary | null
+}
+
+export function Summarization(props: SummarizationProps) {
+  if (props.summary == null) {
+    return (<></>);
+  }
+  return (
+    <>
+      <MetaSummarization text={props.summary.meta_summary} />
+      {props.summary.sites.map(s => <SiteSummarization key={s.site.url} {...s} />)}
+    </>
+  )
 }
 

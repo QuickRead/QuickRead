@@ -24,3 +24,18 @@ export const SiteAdjustmentContext = React.createContext<SiteAdjustment>(
   { add: null, remove: null, set: null, toggleChecked: null }
 )
 
+export interface ArticleSummary {
+  url: string,
+  title: string,
+  text: string,
+}
+
+export interface SiteSummary {
+  site: Site,
+  articles: Array<ArticleSummary>,
+}
+
+export interface Summary {
+  meta_summary: string,
+  sites: Array<SiteSummary>,
+}

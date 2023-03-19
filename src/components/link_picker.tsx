@@ -3,25 +3,6 @@ import { Accordion, Button, ListGroup, ListGroupItem, Form } from 'react-bootstr
 import { Site, Article, SiteContext, SiteAdjustmentContext } from '../contexts/sites';
 import { getCurrentNews } from '../services/server';
 
-// constructor(props: LinkPickerProps) {
-//     super(props);
-//     const siteArticles = getCurrentNews(props.sites.map(site => site.url));
-//     this.state = {
-//         articles: [],
-//         checkedUrls: new Set<string>(),
-//     } as LinkPickerState;
-//     for (const site of siteArticles) {
-//         this.state.articles.push(
-//             {
-//                 site: props.sites.find(site => site.url == site.url)!,
-//                 articles: site.articles.map(article => { return { url: article.url } }),
-//             }
-//         )
-//     }
-// }
-
-
-
 interface LinkPickerProps {
     sites: Array<Site>;
     summarizeCbk: (urls: Array<string>) => void;
@@ -30,7 +11,6 @@ interface LinkPickerProps {
 export function LinkPicker(props: LinkPickerProps) {
     return (
         <LinkPickerBox summarizeCbk={props.summarizeCbk}></LinkPickerBox>
-
     );
 }
 
