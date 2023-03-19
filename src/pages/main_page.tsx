@@ -65,7 +65,9 @@ const IndexPage: React.FC<PageProps> = () => {
   return (
     <main>
       <SiteContext.Provider value={sites} >
-        <SiteAdjustmentContext.Provider value={{ add: addSite, remove: removeSite }}>
+        <SiteAdjustmentContext.Provider value={
+          { add: addSite, remove: removeSite, set: setSites}
+        }>
           <BurgerMenu title="Available source">
             <SitePicker />
           </BurgerMenu>
