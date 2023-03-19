@@ -12,7 +12,7 @@ function createSite(url: string) {
   return {
     name: name,
     url: url,
-    articles: []
+    articles: null,
   };
 }
 

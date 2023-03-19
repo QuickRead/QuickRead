@@ -3,7 +3,7 @@ import * as React from "react"
 export interface Site {
   name: string;
   url: string;
-  articles: Array<Article>;
+  articles: Array<Article> | null;
 }
 
 export interface Article {
