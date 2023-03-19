@@ -49,25 +49,29 @@ export default class LinkPicker extends React.Component<LinkPickerProps> {
             <>
                 <h1>Links to summarize</h1>
                 <Accordion defaultActiveKey={[]} alwaysOpen>
-                    {this.state.articles.map((siteArticles, i) => {
+                    {this.state.articles.map((siteArticles, siteIdx) => {
+                        // get number of checked articles on this site
+                        const checkedArticles = siteArticles.articles.filter(article => this.state.checkedUrls.has(article.url)).length;
+                        const checkedArticlesStr = checkedArticles > 0 ? `(${checkedArticles}) ` : '';
                         return (
-                            <Accordion.Item eventKey={`${i}`} key={`${i}`}>
-                                <Accordion.Header><h4>{siteArticles.site.name}</h4></Accordion.Header>
+                            <Accordion.Item eventKey={`${siteIdx}`} key={`${siteIdx}`}>
+                                <Accordion.Header><h4>{checkedArticlesStr + siteArticles.site.name}</h4></Accordion.Header>
                                 <Accordion.Body>
                                     <ListGroup>
-                                        {siteArticles.articles.map((article) => {
+                                        {siteArticles.articles.map((article, articleIdx) => {
+                                            const checkbox_id = `article-checkbox-${siteIdx}-${articleIdx}`;
                                             return (
                                                 <ListGroupItem key={article.url}>
                                                     <Form>
                                                         <Form.Check
                                                             type="checkbox"
                                                             checked={this.state.checkedUrls.has(article.url)}
-                                                            id={`article-checkbox-${i}`}
+                                                            id={checkbox_id}
                                                             onChange={(e) => {
                                                                 this.toggleChecked(article.url);
                                                             }}
                                                         />
-                                                        <Form.Label htmlFor={`article-checkbox-${i}`}>{article.url}</Form.Label>
+                                                        <Form.Label htmlFor={checkbox_id}>{article.url}</Form.Label>
                                                     </Form>
                                                 </ListGroupItem>
                                             );
@@ -87,5 +91,6 @@ export default class LinkPicker extends React.Component<LinkPickerProps> {
 
     toggleChecked(url: string) {
         this.state.checkedUrls.has(url) ? this.state.checkedUrls.delete(url) : this.state.checkedUrls.add(url)
+        this.forceUpdate()
     }
 }
