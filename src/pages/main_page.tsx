@@ -65,7 +65,7 @@ const IndexPage: React.FC<PageProps> = () => {
   );
 
   return (
-    <main>
+    <main className="m-4">
       <SiteContext.Provider value={sites} >
         <SiteAdjustmentContext.Provider value={
           { add: addSite, remove: removeSite, set: setSites }

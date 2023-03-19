@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Accordion, AccordionContext, Button, Collapse, useAccordionButton } from 'react-bootstrap';
+import { Collapse} from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
-import { FaArrowDown, FaArrowUp } from 'react-icons/fa';
+import { BsChevronDown, BsChevronUp } from 'react-icons/bs';
 import { Site } from '../contexts/sites';
 
 interface ArticleSummary {
@@ -49,7 +49,7 @@ export function SiteSummarization(props: SiteSummarizationProps) {
       >
         {props.site.name}
         <span style={{fontSize: '2rem'}}>
-          {open ? <FaArrowUp /> : <FaArrowDown />}
+          {open ? <BsChevronUp /> : <BsChevronDown />}
         </span>
       </h1>
       <div className='mb-3' />
