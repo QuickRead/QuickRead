@@ -1,16 +1,43 @@
 import * as React from 'react';
-import { GiHamburgerMenu } from 'react-icons/gi';
-import { Button } from 'react-bootstrap';
+import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai';
+import { Button, Offcanvas } from 'react-bootstrap';
 
-export function BurgerMenu(props: React.PropsWithChildren<Object>) {
+const sidebar = {
+  position: 'relative' as 'relative',
+  height: '100vh',
+  width: '0px',
+};
+
+interface BurgerMenuProps {
+  title: string,
+}
+
+const burgerButtonStyles = {
+  position: 'fixed' as 'fixed',
+  margin: '10px',
+}
+
+export function BurgerMenu(props: React.PropsWithChildren<BurgerMenuProps>) {
   const [open, setOpen] = React.useState(false);
 
   return (
     <>
-      <Button onClick={() => setOpen(open => !open)}>
-        <GiHamburgerMenu />
+      <Button
+        variant="primary"
+        onClick={() => setOpen(open => !open)}
+        style={burgerButtonStyles}
+      >
+        <AiOutlineMenu />
       </Button>
-      {open && props.children}
+      <Offcanvas show={open} onHide={() => setOpen(false)}>
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title>{props.title}</Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          {props.children}
+        </Offcanvas.Body>
+      </Offcanvas>
     </>
   );
 }
+

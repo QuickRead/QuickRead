@@ -1,6 +1,5 @@
 import * as React from "react"
 import { HeadFC, PageProps } from "gatsby"
-import LinkPicker from "../components/link_picker";
 import { Site, SiteAdjustmentContext, SiteContext } from "../contexts/sites";
 import { BurgerMenu } from "../components/burger_menu";
 import { SitePicker } from "../components/site_picker";
@@ -38,9 +37,10 @@ const IndexPage: React.FC<PageProps> = () => {
     <main>
       <SiteContext.Provider value={sites} >
         <SiteAdjustmentContext.Provider value={{ add: addSite, remove: removeSite }}>
-          <BurgerMenu>
+          <BurgerMenu title="Available source">
             <SitePicker />
           </BurgerMenu>
+
         </SiteAdjustmentContext.Provider>
       </SiteContext.Provider>
     </main>

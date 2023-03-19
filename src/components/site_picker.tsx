@@ -19,7 +19,6 @@ export function SitePicker() {
 
   return (
     <div className="container mt-3">
-      <h1>Current sources</h1>
       <ListGroup>
         {sites.map((site: Site) => {
           return (
@@ -36,10 +35,11 @@ export function SitePicker() {
         })
         }
       </ListGroup>
+      <div className='mb-4' />
       <InputGroup>
         <Form.Control
           type="url"
-          placeholder="New source address"
+          placeholder="Source url..."
           value={newUrl}
           onChange={(e) => setNewUrl(e.target.value)}
         />
