@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai';
 import { Button, Offcanvas } from 'react-bootstrap';
+import { FaBars } from 'react-icons/fa';
 
 const sidebar = {
   position: 'relative' as 'relative',
@@ -15,6 +15,7 @@ interface BurgerMenuProps {
 const burgerButtonStyles = {
   position: 'fixed' as 'fixed',
   margin: '10px',
+  zIndex: 1044,
 }
 
 export function BurgerMenu(props: React.PropsWithChildren<BurgerMenuProps>) {
@@ -27,7 +28,7 @@ export function BurgerMenu(props: React.PropsWithChildren<BurgerMenuProps>) {
         onClick={() => setOpen(open => !open)}
         style={burgerButtonStyles}
       >
-        <AiOutlineMenu />
+        <FaBars />
       </Button>
       <Offcanvas show={open} onHide={() => setOpen(false)}>
         <Offcanvas.Header closeButton>

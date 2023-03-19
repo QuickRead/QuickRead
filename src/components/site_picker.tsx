@@ -4,6 +4,7 @@ import { FaTrash } from "react-icons/fa";
 import { Site, SiteAdjustmentContext, SiteContext } from '../contexts/sites';
 
 function createSite(url: string) {
+  //TODO: Completion for not entirely complete site URLs
   const name = new URL(url).host
   return {
     name: name,
