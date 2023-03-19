@@ -1,23 +1,23 @@
 import * as React from "react"
 import { HeadFC, PageProps } from "gatsby"
-import { SiteContext } from "../contexts/sites";
 import LinkPicker from "../components/link_picker";
-import {Site} from "../contexts/sites";
+import { Site, SiteAdjustmentContext, SiteContext } from "../contexts/sites";
 import { BurgerMenu } from "../components/burger_menu";
+import { SitePicker } from "../components/site_picker";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const defaultSites = [
   {
-    name: 'Seznam',
+    name: 'seznma.cz',
     url: 'https://www.seznam.cz'
   },
   {
-    name: 'Novinky',
+    name: 'novinky.cz',
     url: 'https://www.novinky.cz'
   },
   {
-    name: 'idnes',
+    name: 'idnes.cz',
     url: 'https://www.idnes.cz'
   },
 ]
@@ -37,8 +37,11 @@ const IndexPage: React.FC<PageProps> = () => {
   return (
     <main>
       <SiteContext.Provider value={sites} >
-        <BurgerMenu sites={sites} addSite={addSite} removeSite={removeSite} />
-        <LinkPicker></LinkPicker>
+        <SiteAdjustmentContext.Provider value={{ add: addSite, remove: removeSite }}>
+          <BurgerMenu>
+            <SitePicker />
+          </BurgerMenu>
+        </SiteAdjustmentContext.Provider>
       </SiteContext.Provider>
     </main>
   )
