@@ -2,8 +2,10 @@ import * as React from "react"
 import { HeadFC, PageProps } from "gatsby"
 import { SiteContext } from "../contexts/sites";
 import LinkPicker from "../components/link_picker";
+import {Site} from "../contexts/sites";
 import { BurgerMenu } from "../components/burger_menu";
 
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const defaultSites = [
   {
@@ -36,6 +38,7 @@ const IndexPage: React.FC<PageProps> = () => {
     <main>
       <SiteContext.Provider value={sites} >
         <BurgerMenu sites={sites} addSite={addSite} removeSite={removeSite} />
+        <LinkPicker></LinkPicker>
       </SiteContext.Provider>
     </main>
   )
