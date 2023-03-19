@@ -20,10 +20,10 @@ interface Article {
 
 interface LinkPickerProps {
     sites: Array<Site>;
-    summarizeCbk: () => void;
+    summarizeCbk: (urls: Array<string>) => void;
 }
 
-export default class LinkPicker extends React.Component<LinkPickerProps> {
+export class LinkPicker extends React.Component<LinkPickerProps> {
     state: LinkPickerState;
 
     constructor(props: LinkPickerProps) {

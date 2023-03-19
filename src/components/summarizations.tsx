@@ -43,7 +43,7 @@ export function SiteSummarization(props: SiteSummarizationProps) {
   return (
     <>
       <h1
-        className="display-2 border-bottom pb-2"
+        className="display-4 border-bottom pb-2"
         style={siteSummaryHeader}
         onClick={() => setOpen(open => !open)}
       >
@@ -70,7 +70,7 @@ export function MetaSummarization(props: MetaSummarizationProps) {
   return (
     <div className="mb-5">
         <h1 className='display-1'>
-          Meta summarization
+          Summarization
         </h1>
       <p style={{width: '90%'}}>
         {props.text}
