@@ -11,7 +11,8 @@ function createSite(url: string) {
   const name = new URL(url).hostname
   return {
     name: name,
-    url: url
+    url: url,
+    articles: []
   };
 }
 

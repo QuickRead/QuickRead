@@ -1,7 +1,6 @@
 import React from 'react';
 import { Accordion, Button, ListGroup, ListGroupItem, Form } from 'react-bootstrap';
-import { Site } from '../contexts/sites';
-import { SiteArticles, Article, ArticlesContext, ArticlesAdjustmentContext } from '../contexts/articles';
+import { Site, Article, SiteContext, SiteAdjustmentContext } from '../contexts/sites';
 import { getCurrentNews } from '../services/server';
 
     // constructor(props: LinkPickerProps) {
@@ -29,29 +28,8 @@ interface LinkPickerProps {
 }
 
 export function LinkPicker(props: LinkPickerProps) {
-    const [articles, setArticles] = React.useState([] as Array<SiteArticles>);
-
-    const toggleChecked = React.useCallback(
-        (toggledArticle: Article) => {
-            let newArticles = [...articles];
-            for (let siteArticles of newArticles) {
-                for (let article of siteArticles.articles) {
-                    if (article == toggledArticle) {
-                        article.checked = !article.checked;
-                    }
-                }
-            }
-            setArticles(newArticles);
-        },
-        [setArticles]
-    );
-
     return (
-        <ArticlesContext.Provider value={articles}>
-            <ArticlesAdjustmentContext.Provider value={{ toggleChecked }}>
-                <LinkPickerBox summarizeCbk={props.summarizeCbk}></LinkPickerBox>
-            </ArticlesAdjustmentContext.Provider>
-        </ArticlesContext.Provider>
+        <LinkPickerBox summarizeCbk={props.summarizeCbk}></LinkPickerBox>
 
     );
 }
@@ -61,19 +39,19 @@ interface LinkPickerBoxProps {
 }
 
 function LinkPickerBox(props: LinkPickerBoxProps) {
-    const articles = React.useContext(ArticlesContext);
-    const { toggleChecked } = React.useContext(ArticlesAdjustmentContext);
+    const sites = React.useContext(SiteContext);
+    const { toggleChecked } = React.useContext(SiteAdjustmentContext);
     return (
         <>
             <h1>Links to summarize</h1>
             <Accordion defaultActiveKey={[]} alwaysOpen>
-                {articles.map((siteArticles, siteIdx) => {
+                {sites.map((siteArticles, siteIdx) => {
                     // get number of checked articles on this site
                     const checkedArticles = siteArticles.articles.filter(article => article.checked).length;
                     const checkedArticlesStr = checkedArticles > 0 ? `(${checkedArticles}) ` : '';
                     return (
                         <Accordion.Item eventKey={`${siteIdx}`} key={`${siteIdx}`}>
-                            <Accordion.Header><h4>{checkedArticlesStr + siteArticles.site.name}</h4></Accordion.Header>
+                            <Accordion.Header><h4>{checkedArticlesStr + siteArticles.name}</h4></Accordion.Header>
                             <Accordion.Body>
                                 <ListGroup>
                                     {siteArticles.articles.map((article, articleIdx) => {
@@ -102,7 +80,7 @@ function LinkPickerBox(props: LinkPickerBoxProps) {
             </Accordion>
             <Button
                 variant="primary"
-                onClick={() => props.summarizeCbk(articles.flatMap(site => site.articles).filter(article => article.checked).map(article => article.url))}
+                onClick={() => props.summarizeCbk(sites.flatMap(site => site.articles).filter(article => article.checked).map(article => article.url))}
             >
                 Summarize
             </Button>
