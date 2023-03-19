@@ -4,8 +4,11 @@ import { FaTrash } from "react-icons/fa";
 import { Site, SiteAdjustmentContext, SiteContext } from '../contexts/sites';
 
 function createSite(url: string) {
-  //TODO: Completion for not entirely complete site URLs
-  const name = new URL(url).host
+  if (!url.startsWith('http')) {
+    url = `https://${url}`
+  }
+
+  const name = new URL(url).hostname
   return {
     name: name,
     url: url
@@ -15,7 +18,10 @@ function createSite(url: string) {
 export function SitePicker() {
   const sites = React.useContext(SiteContext);
   const [newUrl, setNewUrl] = React.useState('');
-  const { add: addSite, remove: removeSite } = React.useContext(SiteAdjustmentContext);
+  const {
+    remove: removeSite,
+    set: setSites,
+  } = React.useContext(SiteAdjustmentContext);
 
 
   return (
@@ -46,8 +52,15 @@ export function SitePicker() {
         />
 
         <Button variant="primary" onClick={() => {
-          if (addSite != null) {
-            addSite(createSite(newUrl));
+          if (setSites != null) {
+            setSites((sites: Array<Site>) => {
+              const newSite = createSite(newUrl);
+              if (!sites.some(site => site.url == newSite.url)) {
+                return [...sites, newSite];
+              }
+
+              return sites;
+            });
             setNewUrl('');
           }
         }}> Add </Button>
